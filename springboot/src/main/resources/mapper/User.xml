@@ -9,11 +9,8 @@
             <if test="username !=null">
                 username = #{username},
             </if>
-<!--            <if test="password !=null">-->
-<!--                password = #{password},-->
-<!--            </if>-->
-            <if test="unickname !=null">
-                unickname = #{nickname},
+            <if test="nickname !=null">
+                nickname = #{nickname},
             </if>
             <if test="email !=null">
                 email = #{email}
@@ -22,11 +19,11 @@
                 ,phone = #{phone},
             </if>
             <if test="address !=null">
-                address = #{address}
+                address = #{address},
             </if>
         </set>
         <where>
-            id=#{id}
+            id = #{id}
         </where>
     </update>
 </mapper>
