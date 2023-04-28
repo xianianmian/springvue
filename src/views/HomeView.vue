@@ -75,7 +75,7 @@
           <div>
             <!-- <span>王小虎</span> -->
             <el-dropdown>
-              <i :class="kaiguantubiao" style="margin-right: 15px;" >王小虎</i>
+              <i :class="kaiguantubiao" style="margin-right: 15px;">王小虎</i>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>查看</el-dropdown-item>
                 <el-dropdown-item>新增</el-dropdown-item>
@@ -89,32 +89,30 @@
         <el-main>
           <div>
             <el-row :gutter="20">
-              <el-col :span="6">            
-                <el-input  placeholder="请输入内容" v-model="username">
-                <i class="el-icon-search el-input__icon" slot="suffix">
-                </i>
-              </el-input>
-            </el-col>
-              <el-col :span="6">            
-                <el-input  placeholder="请输入内容" v-model="test">
-                <i class="el-icon-edit el-input__icon" slot="suffix">
-                </i>
-              </el-input>
-            </el-col>
-              <el-col :span="6">            
-                <el-input  placeholder="请输入内容" v-model="test">
-                <i class="el-icon-edit el-input__icon" slot="suffix">
-                </i>
-              </el-input>
-            </el-col>
-            <el-button  type="primary" @click="load">搜索</el-button>
+              <el-col :span="6">
+                <el-input placeholder="请输入名称" v-model="username" suffix-icon="el-icon-search">
+                </el-input>
+              </el-col>
+              <el-col :span="6">
+                <el-input placeholder="请输入邮箱" v-model="email" suffix-icon="el-icon-message">
+                </el-input>
+              </el-col>
+              <el-col :span="6">
+                <el-input placeholder="请输入地址" v-model="address" suffix-icon="el-icon-position">
+                </el-input>
+              </el-col>
+              <el-button type="primary" @click="load">搜索</el-button>
+              <el-button type="warning" @click="rest">重置</el-button>
             </el-row>
             <el-row :gutter="20">
-              <el-button type="primary">新增</el-button><el-button type="danger">批量删除</el-button>
+              <el-button type="primary" @click="open">新增</el-button>
+              <el-button type="danger" @click="delBatch">批量删除</el-button>
               <el-button type="primary">导入</el-button>
             </el-row>
           </div>
-          <el-table :data="tableData"  stripe>
+          <el-table :data="tableData" stripe   @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55">
+          </el-table-column>
             <el-table-column prop="id" label="ID" width="140">
             </el-table-column>
             <el-table-column prop="username" label="用户名" width="140">
@@ -130,21 +128,50 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                <el-popconfirm 
+                confirm-button-text='好的' 
+                cancel-button-text='不用了' 
+                icon="el-icon-info" 
+                icon-color="red"
+                title="这是一段内容确定删除吗？"
+                @confirm="handleDelete( scope.row.id)">
+                  <el-button size="mini" type="danger"slot="reference">删除</el-button>
+                </el-popconfirm>
+
               </template>
             </el-table-column>
           </el-table>
           <div class="block">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="pageNum"
-              :page-sizes="[2, 5, 10, 20]"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum"
+              :page-sizes="[2, 5, 10, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
               :total="total">
             </el-pagination>
           </div>
+
+
+          <el-dialog title="输入数据" :visible.sync="dialogFormVisible">
+            <el-form :model="form">
+              <el-form-item label="username" :label-width="formLabelWidth">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="address" :label-width="formLabelWidth">
+                <el-input v-model="form.address" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="email" :label-width="formLabelWidth">
+                <el-input v-model="form.email" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="nickname" :label-width="formLabelWidth">
+                <el-input v-model="form.nickname" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="phone" :label-width="formLabelWidth">
+                <el-input v-model="form.phone" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="save">确 定</el-button>
+            </div>
+          </el-dialog>
         </el-main>
       </el-container>
     </el-container>
@@ -154,13 +181,13 @@
 <script>
   // @ is an alias to /src
   import HelloWorld from '@/components/HelloWorld.vue'
-
+  import request from "@/utils/request"
   export default {
     name: 'HomeView',
     components: {
       HelloWorld
     },
-    created(){
+    created() {
       this.load()
     },
     data() {
@@ -168,44 +195,114 @@
         tableData: [],
         iscollapse: false,
         asideWidth: 200,
-        test:'',
-        kaiguantubiao:'el-icon-setting',
+        kaiguantubiao: 'el-icon-setting',
         currentPage4: 4,
-        total:0,
-        pageSize:2,
-        pageNum:1,
-        username:''
+        total: 0,
+        pageSize: 5,
+        pageNum: 1,
+        username: '',
+        email: "",
+        address: "",
+        dialogFormVisible: false,
+        form: {
+          username: '',
+          address: '',
+          email: '',
+          nickname: '',
+          phone: ''
+        },
+        formLabelWidth: '120px',
+        // 批量删除的
+        multipleSelection:[]
       }
     },
     methods: {
-      load(){
-        fetch(`http://localhost:9090/user/page?pageNum=${this.pageNum}&pageSize=${this.pageSize}&username=${this.username}`)
-      .then(res=>res.json())
-      .then(res => {
-        console.log(res)
-      this.tableData = res.data
-      this.total = res.total
-      
-    })
-      },
+      load() {
+        request.get(`/user/page`, {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize,
+            username: this.username,
+            email: this.email,
+            address: this.address,
 
+          }
+        })
+          .then(res => {
+            // console.log(res)
+            this.tableData = res.records
+            this.total = res.total
+          })
+      },
+      rest() {
+        this.username = ''
+        this.address = ''
+        this.email = ''
+        this.load()
+      },
+      open() {
+        this.dialogFormVisible = true
+        this.form = {}
+      },
+      save() {
+
+        request.post(`/user`, this.form)
+          .then(res => {
+            if (res) {
+              this.$message.success("保存成功")
+              this.dialogFormVisible = false
+              this.load()
+            } else {
+              this.$message.console.error("保存失败")
+            }
+          })
+      },
+      handleEdit(i, row) {
+        this.form = row
+        this.dialogFormVisible = true
+      },
+      handleDelete(id) {
+        request.delete("/user/" + id)
+          .then(res => {
+            if (res) {
+              this.$message.success("删除成功")
+              this.load()
+            } else {
+              this.$message.error("删除失败")
+            }
+          })
+      },
+      handleSelectionChange(val){
+        // console.log(val)
+        this.multipleSelection = val
+      },
+      delBatch(){
+      let ids =  this.multipleSelection.map(v=>v.id)
+      request.post("/user/del/batch" , ids)
+          .then(res => {
+            if (res) {
+              this.$message.success("删除成功")
+              this.load()
+            } else {
+              this.$message.error("删除失败")
+            }
+          })
+      },
       kaiguan() {
         this.iscollapse = !this.iscollapse
         if (this.asideWidth == 200) {
           this.asideWidth = 64
-          this.kaiguantubiao='el-icon-s-unfold'
+          this.kaiguantubiao = 'el-icon-s-unfold'
         } else {
           this.asideWidth = 200
-          this.kaiguantubiao='el-icon-setting'
+          this.kaiguantubiao = 'el-icon-setting'
         }
       },
       handleSizeChange(pageSize) {
-        console.log(`每页 ${pageSize} 条`);
         this.pageSize = pageSize
         this.load()
       },
       handleCurrentChange(pageNum) {
-        console.log(`当前页: ${pageNum}`);
         this.pageNum = pageNum
         this.load()
       }
