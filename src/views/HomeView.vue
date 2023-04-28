@@ -90,7 +90,7 @@
           <div>
             <el-row :gutter="20">
               <el-col :span="6">            
-                <el-input  placeholder="请输入内容" v-model="test">
+                <el-input  placeholder="请输入内容" v-model="username">
                 <i class="el-icon-search el-input__icon" slot="suffix">
                 </i>
               </el-input>
@@ -107,16 +107,25 @@
                 </i>
               </el-input>
             </el-col>
-            <el-button>搜索</el-button>
+            <el-button  type="primary" @click="load">搜索</el-button>
             </el-row>
-
+            <el-row :gutter="20">
+              <el-button type="primary">新增</el-button><el-button type="danger">批量删除</el-button>
+              <el-button type="primary">导入</el-button>
+            </el-row>
           </div>
-          <el-table :data="tableData">
-            <el-table-column prop="date" label="日期" width="140">
+          <el-table :data="tableData"  stripe>
+            <el-table-column prop="id" label="ID" width="140">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
+            <el-table-column prop="username" label="用户名" width="140">
+            </el-table-column>
+            <el-table-column prop="nickname" label="姓名" width="120">
             </el-table-column>
             <el-table-column prop="address" label="地址">
+            </el-table-column>
+            <el-table-column prop="phone" label="电话">
+            </el-table-column>
+            <el-table-column prop="email" label="邮箱">
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
@@ -125,6 +134,17 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="block">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="pageNum"
+              :page-sizes="[2, 5, 10, 20]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -140,27 +160,35 @@
     components: {
       HelloWorld
     },
+    created(){
+      this.load()
+    },
     data() {
-      const item = {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      };
       return {
-        tableData: Array(10).fill(item),
+        tableData: [],
         iscollapse: false,
         asideWidth: 200,
         test:'',
-        kaiguantubiao:'el-icon-setting'
+        kaiguantubiao:'el-icon-setting',
+        currentPage4: 4,
+        total:0,
+        pageSize:2,
+        pageNum:1,
+        username:''
       }
     },
     methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+      load(){
+        fetch(`http://localhost:9090/user/page?pageNum=${this.pageNum}&pageSize=${this.pageSize}&username=${this.username}`)
+      .then(res=>res.json())
+      .then(res => {
+        console.log(res)
+      this.tableData = res.data
+      this.total = res.total
+      
+    })
       },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
+
       kaiguan() {
         this.iscollapse = !this.iscollapse
         if (this.asideWidth == 200) {
@@ -170,6 +198,16 @@
           this.asideWidth = 200
           this.kaiguantubiao='el-icon-setting'
         }
+      },
+      handleSizeChange(pageSize) {
+        console.log(`每页 ${pageSize} 条`);
+        this.pageSize = pageSize
+        this.load()
+      },
+      handleCurrentChange(pageNum) {
+        console.log(`当前页: ${pageNum}`);
+        this.pageNum = pageNum
+        this.load()
       }
     }
   }
