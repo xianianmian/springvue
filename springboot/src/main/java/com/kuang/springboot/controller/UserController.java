@@ -1,9 +1,11 @@
 package com.kuang.springboot.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kuang.springboot.service.IUserService;
@@ -20,11 +22,12 @@ import org.springframework.stereotype.Controller;
  * @author 夏年眠
  * @since 2023-04-30
  */
-@Controller
+@RestController
 @RequestMapping("/user")
         public class UserController {
     
-@Resource
+//@Resource
+        @Autowired
 private IUserService userService;
 
 // 新增或者更新
@@ -55,8 +58,23 @@ public User findOne(@PathVariable Integer id) {
 
 @GetMapping("/page")
 public Page<User> findPage(@RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize) {
-        return userService.page(new Page<>(pageNum, pageSize));
+                                @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String username,
+                           @RequestParam(defaultValue = "") String email,
+                           @RequestParam(defaultValue = "") String address) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+        if (!"".equals(username)) {
+
+                queryWrapper.like("username", username);
+        }
+        if (!"".equals(email)) {
+                queryWrapper.like("email", email);
+        }
+        if (!"".equals(address)) {
+                queryWrapper.like("address", address);
+        }
+        return userService.page(new Page<>(pageNum, pageSize),queryWrapper);
         }
 
         }
