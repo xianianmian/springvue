@@ -12,9 +12,11 @@ import com.kuang.springboot.common.Result;
 import com.kuang.springboot.controller.dto.UserDTO;
 import com.kuang.springboot.entity.User;
 import com.kuang.springboot.service.IUserService;
+import com.kuang.springboot.utils.TokenUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +32,7 @@ import java.util.List;
  * @author 夏年眠
  * @since 2023-04-30
  */
+@Component
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -46,6 +49,7 @@ public class UserController {
             return Result.error(Constants.CODE_400,"参数错误");
         }
         UserDTO dto = userService.login(userDTO);
+
         return Result.success(dto);
     }
 
@@ -92,6 +96,7 @@ public class UserController {
         return Result.success(userService.getById(id));
     }
 
+
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
                                @RequestParam Integer pageSize,
@@ -110,6 +115,11 @@ public class UserController {
         if (!"".equals(address)) {
             queryWrapper.like("address", address);
         }
+
+//        User currentUser = TokenUtils.getCurrentUser();
+//        System.out.println(currentUser.getNickname());
+
+
         return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
