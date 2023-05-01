@@ -82,6 +82,7 @@ public Page<${entity}> findPage(@RequestParam Integer pageNum,
         return ${table.entityPath}Service.page(new Page<>(pageNum, pageSize),queryWrapper);
         }
 
+
         }
 
 #end

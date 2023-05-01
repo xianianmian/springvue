@@ -1,5 +1,6 @@
 package com.kuang.springboot.service;
 
+import com.kuang.springboot.controller.dto.UserDTO;
 import com.kuang.springboot.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-04-30
  */
 public interface IUserService extends IService<User> {
-
+    UserDTO login(UserDTO userDTO);
+    User register(UserDTO userDTO);
 }
