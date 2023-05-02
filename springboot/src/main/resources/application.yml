@@ -15,3 +15,8 @@ mybatis:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+files:
+  upload:
+    path: D:/ruoyi/springVue/springstudy/files/
+#    max-size
+

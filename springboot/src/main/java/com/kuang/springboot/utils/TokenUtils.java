@@ -17,8 +17,16 @@ import java.util.Date;
 
 @Component
 public class TokenUtils {
-
     private static IUserService staticUserService;
+
+    @Resource
+    private  IUserService userService;
+
+    @PostConstruct
+    public void setUserService() {
+
+        staticUserService = userService;
+    }
     /**
      * 生成token
      *
@@ -35,13 +43,6 @@ public class TokenUtils {
      *
      * @return user对象
      */
-    @Resource
-    private IUserService userService;
-
-    @PostConstruct
-    public void setUserService() {
-        staticUserService = userService;
-    }
     public static User getCurrentUser() {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
