@@ -1,0 +1,71 @@
+凯尔希绿：#B1C941  rgba(177, 201, 65, 1) 
+白：#F9F8F6 rgba(249.248.246,1)
+
+
+npm add less@^2.7.3
+
+shutdown -s -t 3600
+
+https://github.com/xianianmian/ccsu-wifi-temper
+https://github.com/Likury404/ccsu-wifi-temper
+
+npm i less-loader@6
+npm i echarts
+
+D:\aaaa\envs\NLP
+/Users/KXL/.spyder-py3/temp.py
+
+2104286074@qq.com
+四级：@k719917101
+
+博客园
+2608597528@qq.com
+17891021921
+xianianmian
+
+gitee
+账号：xianianmian
+密码：k719917101
+
+虚拟机
+（
+719151 klhxnj C:\Users\KXL\Documents\Virtual Machines
+）
+
+
+github
+xianianmian
+k719917101
+2608597529@qq.com
+github:https://github.com/xianianmian/mywork-instudent.git
+
+cd C:\Users\KXL\Desktop\一切压缩包\labelImg-master
+pyrcc5 -o resources.py resources.qrc
+python labelImg.py
+
+
+大学生创业：2104286074@qq.com
+Kuang719917101
+
+
+
+
+mysql 密码：123456
+
+环境变量：将文件路径复制到path上，即可再任意目录下打开
+
+https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/First_steps/Silly_story_generator
+
+
+
+22:39 2022/11/27
+
+
+学号 姓名 文件名
+
+43041919451011544x
+L719917101
+
+jiaozi
+Kuang719917101
+

@@ -1,0 +1,125 @@
+<template>
+  <div class="box">
+    <div class="duanXian">
+      <h4>断线检测</h4>
+  <el-table
+    :data="tableData1"
+    border
+    style="width: 100%">
+    <el-table-column
+      fixed
+      prop="right"
+      label="正常"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      fixed
+      prop="error"
+      label="异常"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      fixed="right"
+      label="操作"
+      width="100">
+      <template >
+        <el-button @click="checkDuanXian" type="text" size="small">查看</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+
+  <el-dialog title="具体情况" :visible.sync="dialogTableVisible1">
+  <el-table :data="gridData1">
+    <el-table-column property="id" label="编号" width="150"></el-table-column>
+    <el-table-column property="ttemperature" label="温度" width="150"></el-table-column>
+    <el-table-column property="state" label="状态" width="200"></el-table-column>
+  </el-table>
+</el-dialog>
+    </div>
+    <div class="dianYa">
+      <h4>电压检测</h4>
+      <el-table
+    :data="tableData2"
+    border
+    style="width: 100%">
+    <el-table-column
+      fixed
+      prop="dianYaNum"
+      :label="dianYaLabelName"
+      width="60">
+    </el-table-column>
+    <el-table-column
+      align="center" width="300">
+      <template slot="header" >
+        <el-input-number v-model="numSmall" controls-position="right"  :min="1" :max="10" size="small"></el-input-number>-
+        <el-input-number v-model="numLarge" controls-position="right"  :min="1" :max="10" size="small"></el-input-number>
+      </template>
+      <template >
+        <el-button @click="checkDianYa" type="text" size="small">查看</el-button>
+      </template>
+    </el-table-column>
+
+  </el-table>
+  <el-dialog title="历史记录" :visible.sync="dialogTableVisible2">
+  dfsdfsdf
+</el-dialog>
+    </div>
+    <div class="duanWang">
+      断网检测
+      <div>断网状态：{{ duanWangState }}</div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data(){
+    return{
+      tableData1:[{
+        right:4,
+        error:0
+      }],
+      gridData1:[{
+        id:0,
+        state:'true',
+        Temperature:'20'
+      },{
+        id:1,
+        state:'false'
+      }],
+      dialogTableVisible1:false,
+      dialogTableVisible2:false,
+      tableData2:[{
+        dianYaNum:3
+      }],
+      numLarge:2,
+      numSmall:1,
+      duanWangState:"true",
+      gridData2:[{
+        dianYanum:0,
+      }],
+    }
+
+  },
+  methods:{
+    checkDuanXian(){
+      this.dialogTableVisible1=true
+    },
+    checkDianYa(){
+      this.dialogTableVisible2=true
+    }
+  },
+  mounted(){
+
+  },
+  computed:{
+    dianYaLabelName(){
+      return this.numSmall+'-'+this.numLarge+'V'
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,77 @@
+<template>
+  <div class="hello">
+    <h1>收到的消息:{{msg}}</h1>
+    <button @click="handleclick">发布</button>
+  </div>
+</template>37946144
+
+<script>
+import mqtt from "mqtt";
+export default {
+  name: "HelloWorld",
+  data() {
+    return {
+      mtopic: "1101",
+      msg: "lalala",
+      client: {}
+    };
+  },
+  mounted() {
+    this.client = mqtt.connect("ws://192.168.43.7:80", {
+      username: "admin",
+      password: "123456"
+    });
+    this.client.on("connect", e =>{
+      console.log("连接成功");
+      this.client.subscribe(this.mtopic, (err)=> {
+        if (!err) {
+          console.log("订阅成功:" + this.mtopic);
+        }
+      });
+    });
+    this.client.on("message", (topic, message) => {
+      this.msg = message
+    });
+  },
+  methods: {
+    handleclick: function() {
+      this.client.publish(this.mtopic, this.msg);
+    }
+  }
+};
+</script>
+
+
+
+
+
+ws://192.168.43.7/sockjs-node/922/amcaqfsp/websocket
+
+
+        queryP:{
+          sensordataid:null,
+          value:null,
+          type:'voltage',
+          acquisitionTime: null,
+          thermocoupleId: null,
+          thermocoupleName: null,
+          thermocoupleLocation: null,
+          deviceId: null,
+          deviceName: null,
+          electrolyticCellName: null,
+          electrolyticCellId: null,
+          workshopName: null,
+          workshopId: null,
+          factoryId: null,
+          factoryName: null,
+        }
+
+
+
+
+
+
+
+
+
+
