@@ -35,6 +35,7 @@
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column prop="updateTime" label="加载时间"></el-table-column>
       <el-table-column label="操作"  width="200" align="center">
         <template slot-scope="scope">
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
@@ -81,6 +82,9 @@
         <el-form-item label="地址">
           <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="jinitaim">
+          <el-input v-model="form.updateTime" autocomplete="off"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -121,14 +125,16 @@ export default {
           address: this.address,
         }
       }).then(res => {
+        
 		// 注意data
         this.tableData = res.data.records
         this.total = res.data.total
-
+        console.log(this.tableData,'ss')
       })
     },
     save() {
       this.request.post("/user", this.form).then(res => {
+        
         if (res.data) {
           this.$message.success("保存成功")
           this.dialogFormVisible = false

@@ -12,7 +12,7 @@
       </el-upload>
 
       <el-form-item label="用户名">
-        <el-input v-model="form.username" autocomplete="off"></el-input>
+        <el-input v-model="form.username" autocomplete="off" aria-disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="昵称">
         <el-input v-model="form.nickname" autocomplete="off"></el-input>
@@ -58,11 +58,11 @@ export default {
           this.$message.success("保存成功")
 
           // 更新浏览器存储的用户信息
-          this.getUser().then(res => {
-            res.token = JSON.parse(localStorage.getItem("user")).token
-            localStorage.setItem("user", JSON.stringify(res))
-          })
-
+          // this.getUser().then(res => {
+          //   res.token = JSON.parse(localStorage.getItem("user")).token
+          //   localStorage.setItem("user", JSON.stringify(res))
+          // })
+            this.$emit("refreshUser")
         } else {
           this.$message.error("保存失败")
         }

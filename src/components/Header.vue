@@ -10,8 +10,10 @@
     </div>
     <el-dropdown style="width: 100px; cursor: pointer">
       <div style="display: inline-block">
-        <img :src="user.avatarUrl" alt=""
-             style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px">
+          <el-avatar :size="30" @error="errorHandler" style="position: relative; top: 10px; right: 5px">
+            <img :src="user.avatarUrl"/>
+          </el-avatar>
+        <!-- <img :src="user.avatarUrl" alt="" style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px"> -->
         <span>{{ user.nickname }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
       </div>
       <el-dropdown-menu slot="dropdown" style="width: 100px; text-align: center">
@@ -32,10 +34,11 @@ export default {
   props: {
     collapseBtnClass: String,
     collapse: '',
+    user:Object
   },
   data() {
     return {
-      user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
+      // user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
     }
   },
   methods: {
@@ -43,7 +46,10 @@ export default {
       this.$router.push("/login")
       localStorage.removeItem("user")
       this.$message.success("退出成功")
-    }
+    },
+    errorHandler() {
+        return true
+      }
   },
   computed: {
     currentPathName () {
