@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router ,{resetRouter}from '@/router'
+
 
 Vue.use(Vuex)
 
@@ -10,8 +12,16 @@ const store = new Vuex.Store({
     mutations: {
         setPath (state) {
             state.currentPathName = localStorage.getItem("currentPathName")
+        },
+        resetLogout(state){
+          localStorage.removeItem("user")
+          localStorage.removeItem("menus")
+          router.push("login")
+
+          resetRouter()
         }
-    }
+    },
+
 })
 
 export default store

@@ -1,13 +1,14 @@
 <template>
   <el-container style="min-height: 100vh">
-
+    <!-- 主体页面框架 -->
     <el-aside :width="sideWidth + 'px'" style="box-shadow: 2px 0 6px rgb(0 21 41 / 35%);">
-      <Aside :isCollapse="isCollapse" :logoTextShow="logoTextShow" />
+      <!-- <Aside :isCollapse="zhangkai" :logoTextShow="logoTextShow" /> -->
+      <Aside :isCollapse="zhangkai" :logoTextShow="logoTextShow" />
     </el-aside>
 
     <el-container>
       <el-header style="border-bottom: 1px solid #ccc;">
-        <Header :collapseBtnClass="collapseBtnClass" :collapse="collapse" :user="user"/>
+        <Header :collapseBtnClass="collapseBtnClass" :collapse="collapse" :user="yonghu"/>
       </el-header>
 
       <el-main>
@@ -29,10 +30,10 @@ export default {
   data() {
     return {
       collapseBtnClass: 'el-icon-s-fold',
-      isCollapse: false,
+      zhangkai: false,
       sideWidth: 200,
       logoTextShow: true,
-      user:  {}
+      yonghu:  {}
     }
   },
   components: {
@@ -46,9 +47,10 @@ export default {
     collapse() {  // 点击收缩按钮触发
       this.isCollapse = !this.isCollapse
       if (this.isCollapse) {  // 收缩
-        this.sideWidth = 64
+        this.sideWidth = 50
         this.collapseBtnClass = 'el-icon-s-unfold'
         this.logoTextShow = false
+        console.log(this.logoTextShow);
       } else {   // 展开
         this.sideWidth = 200
         this.collapseBtnClass = 'el-icon-s-fold'
@@ -58,7 +60,7 @@ export default {
     getUser() {//从后台取数据
       let username = localStorage.getItem("user")? JSON.parse(localStorage.getItem("user")).username:""
       this.request.get("/user/username/" + username).then(res=>{
-        this.user = res.data
+        this.yonghu = res.data
       })
     },
   }
