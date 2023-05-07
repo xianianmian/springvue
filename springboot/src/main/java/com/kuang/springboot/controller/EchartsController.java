@@ -30,6 +30,14 @@ public class EchartsController {
         map.put("y", CollUtil.newArrayList(150, 230, 224, 218, 135, 147, 260));
         return Result.success(map);
     }
+//    写着玩的
+    @GetMapping("/lizi")
+    public Result gets() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("x", CollUtil.newArrayList("Mon", "Tue", "Sun"));
+        map.put("y", CollUtil.newArrayList(150, 230, 260));
+        return Result.success(map);
+    }
 
     @GetMapping("/members")
     public Result members() {

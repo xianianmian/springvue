@@ -26,7 +26,8 @@ import java.util.List;
 
 /**
  * <p>
- * 前端控制器
+ * 前端控制器   111
+ * usercontroller(userDTO)---->IUserService(user,userTDO) --->UserServiceImpl
  * </p>
  *
  * @author 夏年眠
@@ -49,6 +50,8 @@ public class UserController {
             return Result.error(Constants.CODE_400,"参数错误");
         }
         UserDTO dto = userService.login(userDTO);
+
+
 
         return Result.success(dto);
     }
@@ -116,10 +119,11 @@ public class UserController {
             queryWrapper.like("address", address);
         }
 
-//        User currentUser = TokenUtils.getCurrentUser();
-//        System.out.println(currentUser.getNickname());
-
-
+/*
+        User currentUser = TokenUtils.getCurrentUser();
+        assert currentUser != null;
+        System.out.println(currentUser.getNickname());
+*/
         return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
