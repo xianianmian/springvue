@@ -33,9 +33,15 @@
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
-      <el-table-column prop="updateTime" label="加载时间"></el-table-column>
-      <el-table-column label="操作" width="200" align="center">
+      <!-- <el-table-column prop="updateTime" label="加载时间"></el-table-column> -->
+      <el-table-column label="操作" width="350" align="center">
         <template slot-scope="scope">
+          <el-button type="primary" 
+          @click="lookCourse(scope.row.courses)"
+          v-if="scope.row.role == 'ROLE_TEACHER'">查看任课 <i class="el-icon-edit"></i></el-button>
+          <el-button type="primary" 
+          @click="looStukCourse(scope.row.stuCourses)"
+          v-if="scope.row.role == 'ROLE_STUDENT'">查看已选课程 <i class="el-icon-edit"></i></el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
             icon-color="red" title="您确定删除吗？" @confirm="del(scope.row.id)">
@@ -83,6 +89,18 @@
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="任课信息" :visible.sync="vis" width="30%">
+      <el-table :data="courses" border>
+      <el-table-column prop="name" label="任课名称" width="80"></el-table-column>
+      <el-table-column prop="score" label="学分" width="140"></el-table-column>
+    </el-table>
+    </el-dialog>
+    <el-dialog title="选课信息" :visible.sync="stuvis" width="30%">
+      <el-table :data="stuCourses" border>
+      <el-table-column prop="name" label="课程名称" width="80"></el-table-column>
+      <el-table-column prop="score" label="学分" width="140"></el-table-column>
+    </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -101,7 +119,11 @@
         form: {},
         dialogFormVisible: false,
         multipleSelection: [],
-        roles: []
+        roles: [],
+        courses:[],
+        stuCourses:[],
+        vis:false,
+        stuvis:false
       }
     },
     created() {
@@ -118,7 +140,6 @@
             address: this.address,
           }
         }).then(res => {
-          // 注意data
           this.tableData = res.data.records
           this.total = res.data.total
         })
@@ -137,6 +158,15 @@
             this.$message.error("保存失败")
           }
         })
+      },
+      lookCourse(courses){
+        this.vis = true
+        this.courses = courses
+      },
+      looStukCourse(stuCourses){
+        console.log(stuCourses,'dfghjk')
+        this.stuvis = true
+        this.stuCourses = stuCourses
       },
       handleAdd() {
         this.dialogFormVisible = true
@@ -157,7 +187,6 @@
         })
       },
       handleSelectionChange(val) {
-        console.log(val)
         this.multipleSelection = val
       },
       delBatch() {

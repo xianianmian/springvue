@@ -3,6 +3,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 const request = axios.create({
     baseURL: 'http://localhost:9090',
+    //超时
     timeout: 5000
 })
 

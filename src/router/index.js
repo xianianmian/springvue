@@ -37,7 +37,7 @@ const router = new VueRouter({
 //重置路由
 export const resetRouter = () => {
   router.matcher = new VueRouter({
-    mode: history,
+    mode: "history",
     base: process.env.BASE_URL,
     routes
   })
