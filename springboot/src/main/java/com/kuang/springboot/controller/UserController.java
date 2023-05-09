@@ -50,9 +50,6 @@ public class UserController {
             return Result.error(Constants.CODE_400,"参数错误");
         }
         UserDTO dto = userService.login(userDTO);
-
-
-
         return Result.success(dto);
     }
 
@@ -73,11 +70,21 @@ public class UserController {
         return  Result.success(userService.getOne(queryWrapper));
     }
 
+    @GetMapping("/role/{role}")
+    public Result findUserRole(@PathVariable String role) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("role",role);
+        List<User> list = userService.list(queryWrapper);
+        return Result.success(list);
+    }
+
     // 新增或者更新
     @PostMapping
     public Result save(@RequestBody User user) {
         return Result.success(userService.saveOrUpdate(user)) ;
     }
+
+
 
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
@@ -106,6 +113,7 @@ public class UserController {
                                @RequestParam(defaultValue = "") String username,
                                @RequestParam(defaultValue = "") String email,
                                @RequestParam(defaultValue = "") String address) {
+/*
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
         if (!"".equals(username)) {
@@ -118,13 +126,8 @@ public class UserController {
         if (!"".equals(address)) {
             queryWrapper.like("address", address);
         }
-
-/*
-        User currentUser = TokenUtils.getCurrentUser();
-        assert currentUser != null;
-        System.out.println(currentUser.getNickname());
 */
-        return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
+        return Result.success(userService.findPage(new Page<>(pageNum, pageSize), username,email,address));
     }
 
     /**

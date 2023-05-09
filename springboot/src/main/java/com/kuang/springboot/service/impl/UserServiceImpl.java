@@ -3,6 +3,7 @@ package com.kuang.springboot.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kuang.springboot.common.Constants;
 import com.kuang.springboot.controller.dto.UserDTO;
 import com.kuang.springboot.entity.Menu;
@@ -44,6 +45,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private IMenuService MenuService;
 
+    @Autowired
+    private  UserMapper userMapper;
+
     @Override
     public UserDTO login(UserDTO userDTO) {
         User one = getUserInfo(userDTO);
@@ -73,6 +77,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 //        System.out.println(one);
         return one;
+    }
+
+    @Override
+    public Page<User> findPage(Page<User> page, String username, String email, String address) {
+
+        return userMapper.findPage(page,username,email,address);
     }
 
     private User getUserInfo(UserDTO userDTO) {

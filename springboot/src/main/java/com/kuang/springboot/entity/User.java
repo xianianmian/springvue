@@ -1,11 +1,13 @@
 package com.kuang.springboot.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -59,5 +61,9 @@ public class User implements Serializable {
       @ApiModelProperty("角色")
       private String role;
 
+      @TableField(exist = false)
+      private List<Course> courses;
 
+      @TableField(exist = false)
+      private List<Course> stuCourses;
 }
