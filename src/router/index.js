@@ -7,6 +7,18 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/front',
+    name: 'Frant',
+    component: () => import('../views/front/Home.vue'),
+    children:[
+      {
+        path: 'home',
+        name: 'FrantHome',
+        component: () => import('../views/front/Front.vue'),
+      }
+    ]
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue')
@@ -17,7 +29,7 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/Register',
+    path: '/register',
     name: 'register',
     component: () => import('../views/Register.vue')
   },
