@@ -33,6 +33,12 @@ public class FileController {
     @Resource
     private FileMapper fileMapper;
 
+    @GetMapping("/front/all")
+    private Result frontAll(){
+        return Result.success(fileMapper.selectList(null));
+    }
+
+
     private Files getFileByMd5(String md5) {
         // 查询文件的md5是否存在
         QueryWrapper<Files> queryWrapper = new QueryWrapper<>();

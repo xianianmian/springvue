@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.kuang.springboot.common.Constants;
+import com.kuang.springboot.config.AuthAccess;
 import com.kuang.springboot.entity.User;
 import com.kuang.springboot.exception.ServiceException;
 import com.kuang.springboot.service.IUserService;
@@ -26,8 +27,17 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         // 如果不是映射到方法直接通过
         if(!(handler instanceof HandlerMethod)){
-            return true;
+           return true;
+        }else{
+            HandlerMethod h = (HandlerMethod) handler;
+            AuthAccess authAccess = h.getMethodAnnotation(AuthAccess.class);
+            if(authAccess !=null){
+                return  true;
+            }
         }
+
+
+
         // 执行认证
         if (StrUtil.isBlank(token)) {
             throw new ServiceException(Constants.CODE_401, "无token，请重新登录");
